@@ -199,7 +199,6 @@ import {
   ShoppingCartIcon,
   SunIcon,
   CloudIcon,
-  CloudRainIcon,
 } from '@heroicons/vue/24/outline';
 
 const authStore = useAuthStore();
@@ -255,8 +254,8 @@ const getWeatherIcon = (condition) => {
   const iconMap = {
     clear: SunIcon,
     cloudy: CloudIcon,
-    rainy: CloudRainIcon,
-    stormy: CloudRainIcon,
+    rainy: CloudIcon,
+    stormy: CloudIcon,
   };
   return iconMap[condition] || SunIcon;
 };
