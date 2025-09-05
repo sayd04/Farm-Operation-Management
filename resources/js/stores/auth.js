@@ -44,7 +44,9 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
 
       try {
-        const response = await axios.post('/api/register', userData);
+        // Ensure role cannot be set from client; backend defaults to buyer
+        const { role, ...sanitized } = userData || {};
+        const response = await axios.post('/api/register', sanitized);
         
         this.token = response.data.token;
         this.user = response.data.user;

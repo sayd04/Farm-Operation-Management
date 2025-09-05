@@ -42,7 +42,7 @@ import WeatherReports from '@/Pages/Reports/Weather.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/dashboard'
+    redirect: '/login'
   },
   {
     path: '/login',

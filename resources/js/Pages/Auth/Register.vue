@@ -44,20 +44,7 @@
             />
           </div>
           
-          <div>
-            <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-            <select
-              id="role"
-              v-model="form.role"
-              name="role"
-              required
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-            >
-              <option value="">Select your role</option>
-              <option value="farmer">Farmer</option>
-              <option value="buyer">Buyer</option>
-            </select>
-          </div>
+          
           
           <div>
             <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number (Optional)</label>
@@ -141,7 +128,6 @@ const authStore = useAuthStore();
 const form = ref({
   name: '',
   email: '',
-  role: '',
   phone: '',
   password: '',
   password_confirmation: ''

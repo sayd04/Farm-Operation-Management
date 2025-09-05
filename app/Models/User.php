@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as LaravelUser;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Jenssegers\Mongodb\Eloquent\Model as MongoModel;
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Auth\User as MongoAuthenticatable;
 
-class User extends Authenticatable
+// Extend the MongoDB Authenticatable to work with Sanctum and Auth
+class User extends MongoAuthenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 

@@ -51,6 +51,19 @@ class UserManagementController extends Controller
             ], 422);
         }
 
+        // Enforce unique admin and unique farmer
+        if ($request->role === User::ROLE_ADMIN && User::where('role', User::ROLE_ADMIN)->exists()) {
+            return response()->json([
+                'message' => 'There can only be one admin user',
+            ], 422);
+        }
+
+        if ($request->role === User::ROLE_FARMER && User::where('role', User::ROLE_FARMER)->exists()) {
+            return response()->json([
+                'message' => 'There can only be one farmer user',
+            ], 422);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -88,6 +101,21 @@ class UserManagementController extends Controller
         }
 
         $updateData = $request->only(['name', 'email', 'role', 'phone', 'address']);
+
+        // Enforce unique admin and unique farmer on role change
+        if (isset($updateData['role']) && $updateData['role'] !== $user->role) {
+            if ($updateData['role'] === User::ROLE_ADMIN && User::where('role', User::ROLE_ADMIN)->where('_id', '!=', $user->_id)->exists()) {
+                return response()->json([
+                    'message' => 'There can only be one admin user',
+                ], 422);
+            }
+
+            if ($updateData['role'] === User::ROLE_FARMER && User::where('role', User::ROLE_FARMER)->where('_id', '!=', $user->_id)->exists()) {
+                return response()->json([
+                    'message' => 'There can only be one farmer user',
+                ], 422);
+            }
+        }
         
         if ($request->has('password')) {
             $updateData['password'] = Hash::make($request->password);

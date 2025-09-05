@@ -21,7 +21,6 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:farmer,buyer,admin',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|array',
             'address.street' => 'nullable|string',
@@ -42,7 +41,8 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            // Force default role as buyer; role assignment is admin-only
+            'role' => \App\Models\User::ROLE_BUYER,
             'phone' => $request->phone,
             'address' => $request->address,
         ]);
