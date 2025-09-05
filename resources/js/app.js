@@ -2,8 +2,9 @@ import './bootstrap';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
-import routes from './routes';
+import routes, { setupRouterGuards } from './routes';
 import { createPinia } from 'pinia';
+import { useAuthStore } from './stores/auth';
 
 // Create Pinia store
 const pinia = createPinia();
@@ -19,5 +20,17 @@ const app = createApp(App);
 
 app.use(pinia);
 app.use(router);
+
+// Set up router guards after Pinia is installed
+setupRouterGuards(router);
+
+// Initialize auth state
+const authStore = useAuthStore();
+authStore.initializeAuth();
+
+// Fetch user data if token exists
+if (authStore.token) {
+    authStore.fetchUser();
+}
 
 app.mount('#app');
