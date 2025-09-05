@@ -114,8 +114,10 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb+srv://hanyunikul:BR5zKgPrUqiIxBnc@foms.ojwan9p.mongodb.net/FOMS?retryWrites=true&w=majority'),
-            'database' => env('DB_DATABASE', 'FOMS'),
+            'dsn' => env('DB_DSN', env('DB_URI', 'mongodb://'.env('DB_HOST', '127.0.0.1').':'.env('DB_PORT', '27017').'/'.env('DB_DATABASE', 'farm_operations'))),
+            'database' => env('DB_DATABASE', 'farm_operations'),
+            'username' => env('DB_USERNAME', ''),
+            'password' => env('DB_PASSWORD', ''),
         ],
     ],
 
