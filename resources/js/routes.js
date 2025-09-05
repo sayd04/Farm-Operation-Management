@@ -208,33 +208,4 @@ const routes = [
   },
 ];
 
-// Navigation guards
-const router = {
-  beforeEach: (to, from, next) => {
-    const authStore = useAuthStore();
-    
-    // Check if route requires authentication
-    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-      next('/login');
-      return;
-    }
-    
-    // Check if route requires guest (not authenticated)
-    if (to.meta.requiresGuest && authStore.isAuthenticated) {
-      next('/dashboard');
-      return;
-    }
-    
-    // Check role-based access
-    if (to.meta.roles && authStore.user) {
-      if (!to.meta.roles.includes(authStore.user.role)) {
-        next('/dashboard'); // Redirect to dashboard if role not allowed
-        return;
-      }
-    }
-    
-    next();
-  }
-};
-
 export default routes;
