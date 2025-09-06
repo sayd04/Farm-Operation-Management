@@ -42,7 +42,8 @@ import WeatherReports from '@/Pages/Reports/Weather.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/dashboard'
+    name: 'home',
+    component: () => import('@/Pages/Auth/Login.vue'), // Temporary, will be handled by router guard
   },
   {
     path: '/login',
@@ -208,10 +209,22 @@ const routes = [
   },
 ];
 
-// Navigation guards
-const router = {
-  beforeEach: (to, from, next) => {
+export default routes;
+
+// Navigation guard function to be used in main app
+export const setupRouterGuards = (router) => {
+  router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
+    
+    // Handle root path redirect
+    if (to.path === '/') {
+      if (authStore.isAuthenticated) {
+        next('/dashboard');
+      } else {
+        next('/login');
+      }
+      return;
+    }
     
     // Check if route requires authentication
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
@@ -234,7 +247,5 @@ const router = {
     }
     
     next();
-  }
+  });
 };
-
-export default routes;

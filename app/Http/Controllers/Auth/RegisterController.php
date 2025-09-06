@@ -20,7 +20,6 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:farmer,buyer,admin',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|array',
             'address.street' => 'nullable|string',
@@ -37,11 +36,18 @@ class RegisterController extends Controller
             ], 422);
         }
 
+        // Check if admin or farmer roles already exist (only one allowed for each)
+        $adminExists = User::where('role', 'admin')->exists();
+        $farmerExists = User::where('role', 'farmer')->exists();
+
+        // Default role is buyer
+        $role = 'buyer';
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => $role,
             'phone' => $request->phone,
             'address' => $request->address,
         ]);

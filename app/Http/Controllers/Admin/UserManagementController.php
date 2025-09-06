@@ -51,11 +51,25 @@ class UserManagementController extends Controller
             ], 422);
         }
 
+        // Check role restrictions - only one admin and one farmer allowed
+        $requestedRole = $request->role;
+        if ($requestedRole === 'admin' && User::where('role', 'admin')->exists()) {
+            return response()->json([
+                'message' => 'Only one admin user is allowed'
+            ], 422);
+        }
+        
+        if ($requestedRole === 'farmer' && User::where('role', 'farmer')->exists()) {
+            return response()->json([
+                'message' => 'Only one farmer user is allowed'
+            ], 422);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => $requestedRole,
             'phone' => $request->phone,
             'address' => $request->address,
         ]);
@@ -85,6 +99,23 @@ class UserManagementController extends Controller
                 'message' => 'Validation failed',
                 'errors' => $validator->errors()
             ], 422);
+        }
+
+        // Check role restrictions if role is being updated
+        if ($request->has('role') && $request->role !== $user->role) {
+            $requestedRole = $request->role;
+            
+            if ($requestedRole === 'admin' && User::where('role', 'admin')->where('id', '!=', $user->id)->exists()) {
+                return response()->json([
+                    'message' => 'Only one admin user is allowed'
+                ], 422);
+            }
+            
+            if ($requestedRole === 'farmer' && User::where('role', 'farmer')->where('id', '!=', $user->id)->exists()) {
+                return response()->json([
+                    'message' => 'Only one farmer user is allowed'
+                ], 422);
+            }
         }
 
         $updateData = $request->only(['name', 'email', 'role', 'phone', 'address']);

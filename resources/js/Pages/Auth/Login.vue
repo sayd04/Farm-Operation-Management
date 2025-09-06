@@ -91,7 +91,8 @@ const form = ref({
 const handleLogin = async () => {
   try {
     await authStore.login(form.value);
-    router.push('/dashboard');
+    // Let the router guard handle the redirect based on auth state
+    router.push('/');
   } catch (error) {
     // Error is handled in the store
     console.error('Login error:', error);
