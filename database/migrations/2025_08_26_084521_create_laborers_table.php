@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('laborers', function (Blueprint $table) {
             $table->id();
+			$table->foreignId('farmer_id')->constrained('users')->onDelete('cascade')->index();
             $table->string('name');
             $table->string('contact')->nullable();
             $table->decimal('hourly_rate', 8, 2);
-            $table->timestamps();
+			$table->text('notes')->nullable();
+			$table->timestamps();
         });
     }
 

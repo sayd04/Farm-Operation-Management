@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('harvests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('planting_id')->constrained()->onDelete('cascade');
-            $table->decimal('yield', 10, 2);
-            $table->datetime('harvest_date');
-            $table->enum('quality', ['excellent', 'good', 'average', 'poor']);
+			$table->decimal('yield_kg', 10, 2);
+			$table->date('harvest_date');
+			$table->string('quality_grade')->nullable();
+			$table->decimal('moisture_content', 5, 2)->nullable();
+			$table->foreignId('buyer_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }
