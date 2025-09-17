@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('inventory_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->decimal('quantity', 10, 2);
-            $table->decimal('price', 10, 2);
-            $table->string('unit');
-            $table->decimal('min_stock', 10, 2);
+			$table->foreignId('farmer_id')->constrained('users')->onDelete('cascade')->index();
+			$table->string('name');
+			$table->string('category');
+			$table->decimal('quantity', 10, 2)->default(0);
+			$table->string('unit');
+			$table->decimal('price_per_unit', 10, 2)->default(0);
+			$table->decimal('min_stock', 10, 2)->default(0);
+			$table->string('sku')->nullable()->index();
             $table->timestamps();
         });
     }

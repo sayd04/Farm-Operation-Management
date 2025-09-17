@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+			$table->foreignId('farmer_id')->constrained('users')->onDelete('cascade')->index();
+			$table->string('description');
             $table->decimal('amount', 10, 2);
             $table->enum('category', ['seeds', 'fertilizer', 'pesticide', 'labor', 'equipment', 'utilities', 'maintenance', 'other']);
-            $table->datetime('date');
+			$table->date('date');
             $table->foreignId('planting_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });

@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('location');
-            $table->string('soil_type');
-            $table->decimal('size', 10, 2);
+			$table->foreignId('farm_id')->constrained('farms')->onDelete('cascade')->index();
+			$table->string('name');
+			$table->text('location_description')->nullable();
+			$table->decimal('size', 10, 2);
+			$table->string('soil_type')->nullable();
+			$table->string('drainage')->nullable();
             $table->timestamps();
         });
     }

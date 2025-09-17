@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade');
-            $table->enum('status', ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
-            $table->decimal('total_amount', 10, 2);
+			$table->foreignId('buyer_id')->constrained('users')->onDelete('cascade')->index();
+			$table->foreignId('seller_id')->constrained('users')->onDelete('cascade')->index();
+			$table->enum('status', ['pending','confirmed','shipped','delivered','cancelled'])->default('pending');
+			$table->decimal('total_amount', 10, 2);
+			$table->string('shipping_address');
+			$table->string('payment_method')->nullable();
             $table->timestamps();
         });
     }

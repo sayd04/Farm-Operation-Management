@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('weather_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('field_id')->constrained()->onDelete('cascade');
-            $table->decimal('temperature', 5, 1);
-            $table->decimal('humidity', 5, 1);
-            $table->decimal('wind_speed', 5, 1);
-            $table->enum('conditions', ['clear', 'cloudy', 'rainy', 'stormy', 'snowy', 'foggy']);
-            $table->datetime('recorded_at');
+			$table->decimal('temperature_c', 5, 1)->nullable();
+			$table->decimal('humidity_pct', 5, 1)->nullable();
+			$table->decimal('wind_speed_mps', 5, 1)->nullable();
+			$table->string('conditions')->nullable();
+			$table->json('forecast_json')->nullable();
+			$table->datetime('recorded_at');
             $table->timestamps();
         });
     }

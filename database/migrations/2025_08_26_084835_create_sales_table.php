@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('harvest_id')->constrained()->onDelete('cascade');
-            $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade');
-            $table->decimal('quantity', 10, 2);
+			$table->foreignId('seller_id')->constrained('users')->onDelete('cascade');
+			$table->foreignId('buyer_id')->constrained('users')->onDelete('cascade');
+			$table->decimal('quantity_kg', 10, 2);
             $table->decimal('total_amount', 10, 2);
-            $table->datetime('sale_date');
+			$table->date('sale_date');
             $table->timestamps();
         });
     }

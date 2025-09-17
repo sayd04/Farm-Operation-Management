@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('planting_id')->constrained()->onDelete('cascade');
-            $table->enum('task_type', ['watering', 'fertilizing', 'weeding', 'pest_control', 'harvesting', 'maintenance']);
-            $table->datetime('due_date');
+			$table->string('task_type');
+			$table->date('due_date');
             $table->text('description')->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])->default('pending');
-            $table->foreignId('assigned_to')->nullable()->constrained('laborers')->onDelete('set null');
+			$table->enum('status', ['pending','in_progress','done'])->default('pending');
+			$table->foreignId('assigned_to')->nullable()->constrained('laborers')->nullOnDelete();
             $table->timestamps();
         });
     }

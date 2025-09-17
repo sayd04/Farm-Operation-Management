@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('laborer_id')->constrained()->onDelete('cascade');
             $table->foreignId('task_id')->nullable()->constrained()->onDelete('set null');
-            $table->decimal('hours_worked', 8, 2);
-            $table->decimal('wage_amount', 10, 2);
-            $table->datetime('date');
+			$table->decimal('hours_worked', 8, 2);
+			$table->decimal('wage_amount', 10, 2);
+			$table->date('date');
             $table->timestamps();
         });
     }

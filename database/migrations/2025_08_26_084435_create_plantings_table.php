@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('plantings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('field_id')->constrained()->onDelete('cascade');
-            $table->string('crop_type');
-            $table->datetime('planting_date');
-            $table->datetime('expected_harvest_date');
-            $table->enum('status', ['planted', 'growing', 'ready', 'harvested', 'failed'])->default('planted');
+			$table->string('rice_variety');
+			$table->enum('crop_type', ['rice'])->default('rice');
+			$table->string('planting_method')->nullable();
+			$table->date('planting_date')->index();
+			$table->date('expected_harvest_date')->nullable()->index();
+			$table->enum('status', ['planned','growing','harvested','abandoned'])->default('planned');
+			$table->decimal('seed_rate', 10, 2)->nullable();
+			$table->json('fertilizer_plan')->nullable();
             $table->timestamps();
         });
     }
