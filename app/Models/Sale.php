@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'sales';
+    protected $table = 'sales';
 
     protected $fillable = [
         'harvest_id',

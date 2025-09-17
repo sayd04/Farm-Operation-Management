@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Buyer extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'buyers';
+    protected $table = 'buyers';
 
     protected $fillable = [
         'name', 'contact_info', 'address'

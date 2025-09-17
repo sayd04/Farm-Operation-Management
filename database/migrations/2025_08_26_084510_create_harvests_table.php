@@ -1,18 +1,31 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::connection('mongodb')->create('harvests', function ($collection) {
-            $collection->index('planting_id');
+        Schema::create('harvests', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('planting_id')->constrained()->onDelete('cascade');
+            $table->decimal('yield', 10, 2);
+            $table->datetime('harvest_date');
+            $table->enum('quality', ['excellent', 'good', 'average', 'poor']);
+            $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::connection('mongodb')->drop('harvests');
+        Schema::dropIfExists('harvests');
     }
 };

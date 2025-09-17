@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Expense extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'expenses';
+    protected $table = 'expenses';
 
     protected $fillable = [
         'description',

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class WeatherLog extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'weather_logs';
+    protected $table = 'weather_logs';
 
     protected $fillable = [
         'field_id',
