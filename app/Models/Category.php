@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'categories';
+    protected $table = 'categories';
 
     protected $fillable = [
         'name', 'description'

@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'inventory_items';
+    protected $table = 'inventory_items';
 
     protected $fillable = [
         'name',
-        'category',
+        'category_id',
         'quantity',
         'price',
         'unit',
@@ -34,6 +33,14 @@ class InventoryItem extends Model
     const CATEGORY_PESTICIDE = 'pesticide';
     const CATEGORY_EQUIPMENT = 'equipment';
     const CATEGORY_PRODUCE = 'produce';
+
+    /**
+     * Get the category for this inventory item
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     /**
      * Get the order items for this inventory item
