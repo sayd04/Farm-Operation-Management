@@ -13,10 +13,13 @@ class WeatherService
     private string $apiKey;
     private string $baseUrl;
 
-    public function __construct()
+    private WeatherAnalyticsService $weatherAnalyticsService;
+
+    public function __construct(WeatherAnalyticsService $weatherAnalyticsService)
     {
         $this->apiKey = config('services.openweather.api_key');
         $this->baseUrl = config('services.openweather.base_url');
+        $this->weatherAnalyticsService = $weatherAnalyticsService;
     }
 
     /**
@@ -93,15 +96,23 @@ class WeatherService
      */
     public function updateFieldWeather(Field $field): bool
     {
-        if (!isset($field->location['lat']) || !isset($field->location['lon'])) {
+        // Check for coordinates in both field_coordinates and location
+        $coordinates = $field->field_coordinates ?? $field->location;
+        
+        if (!$coordinates) {
+            Log::warning('Field coordinates missing', ['field_id' => $field->id]);
+            return false;
+        }
+
+        $lat = $coordinates['latitude'] ?? $coordinates['lat'] ?? null;
+        $lon = $coordinates['longitude'] ?? $coordinates['lon'] ?? null;
+
+        if (!$lat || !$lon) {
             Log::warning('Field location coordinates missing', ['field_id' => $field->id]);
             return false;
         }
 
-        $weatherData = $this->getCurrentWeather(
-            $field->location['lat'],
-            $field->location['lon']
-        );
+        $weatherData = $this->getCurrentWeather($lat, $lon);
 
         if (!$weatherData) {
             return false;
@@ -116,6 +127,9 @@ class WeatherService
                 'conditions' => $this->mapWeatherCondition($weatherData['weather'][0]['main']),
                 'recorded_at' => now(),
             ]);
+
+            // Generate weather alerts after storing new data
+            $this->weatherAnalyticsService->analyzeFieldWeather($field);
 
             return true;
         } catch (\Exception $e) {
@@ -154,62 +168,35 @@ class WeatherService
      */
     public function getWeatherAlerts(Field $field): array
     {
-        $alerts = [];
-        $latestWeather = $field->latestWeather;
-
-        if (!$latestWeather) {
-            return $alerts;
-        }
-
-        // Temperature alerts
-        if ($latestWeather->temperature < 5) {
-            $alerts[] = [
-                'type' => 'warning',
-                'message' => 'Frost warning: Temperature is below 5°C. Protect sensitive crops.',
-                'category' => 'temperature'
-            ];
-        } elseif ($latestWeather->temperature > 35) {
-            $alerts[] = [
-                'type' => 'warning',
-                'message' => 'Heat warning: Temperature is above 35°C. Ensure adequate watering.',
-                'category' => 'temperature'
+        // Get rice-specific weather alerts from analytics service
+        $riceAlerts = $this->weatherAnalyticsService->analyzeFieldWeather($field);
+        
+        // Convert to format expected by UI
+        $formattedAlerts = [];
+        foreach ($riceAlerts as $alert) {
+            $formattedAlerts[] = [
+                'type' => $this->mapSeverityToType($alert['severity']),
+                'message' => $alert['title'] . ': ' . $alert['description'],
+                'category' => $alert['alert_type'],
+                'recommendations' => $alert['recommendations'] ?? []
             ];
         }
 
-        // Wind alerts
-        if ($latestWeather->wind_speed > 20) {
-            $alerts[] = [
-                'type' => 'caution',
-                'message' => 'Strong winds detected. Avoid spraying pesticides or fertilizers.',
-                'category' => 'wind'
-            ];
-        }
+        return $formattedAlerts;
+    }
 
-        // Humidity alerts
-        if ($latestWeather->humidity < 30) {
-            $alerts[] = [
-                'type' => 'info',
-                'message' => 'Low humidity detected. Consider increasing irrigation.',
-                'category' => 'humidity'
-            ];
-        } elseif ($latestWeather->humidity > 80) {
-            $alerts[] = [
-                'type' => 'caution',
-                'message' => 'High humidity may increase disease risk. Monitor crops closely.',
-                'category' => 'humidity'
-            ];
-        }
-
-        // Weather condition alerts
-        if (in_array($latestWeather->conditions, ['stormy', 'rainy'])) {
-            $alerts[] = [
-                'type' => 'info',
-                'message' => 'Wet conditions detected. Delay outdoor activities if possible.',
-                'category' => 'conditions'
-            ];
-        }
-
-        return $alerts;
+    /**
+     * Map severity to UI alert type
+     */
+    private function mapSeverityToType(string $severity): string
+    {
+        return match($severity) {
+            'critical' => 'danger',
+            'high' => 'warning',
+            'medium' => 'caution',
+            'low' => 'info',
+            default => 'info'
+        };
     }
 
     /**

@@ -21,10 +21,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // First seed rice varieties and growth stages
+        // First seed rice varieties, growth stages, task templates, and inventory categories
         $this->call([
             RiceVarietySeeder::class,
             RiceGrowthStageSeeder::class,
+            TaskTemplateSeeder::class,
+            InventoryCategorySeeder::class,
         ]);
 
         // Create admin user
@@ -341,14 +343,35 @@ class DatabaseSeeder extends Seeder
             'assigned_to' => $laborer2->id
         ]);
 
+        // Get inventory categories
+        $seedsCategory = \App\Models\InventoryCategory::where('code', 'SEEDS')->first();
+        $fertilizerCategory = \App\Models\InventoryCategory::where('code', 'FERTILIZER')->first();
+        $pesticidesCategory = \App\Models\InventoryCategory::where('code', 'PESTICIDE')->first();
+        $produceCategory = \App\Models\InventoryCategory::where('code', 'PRODUCE')->first();
+
         // Create rice farming inventory items
         InventoryItem::create([
             'name' => 'IR64 Rice Seeds',
             'category' => 'seeds',
+            'category_id' => $seedsCategory->id,
+            'sku' => 'SEED-IR64-001',
+            'brand' => 'PhilRice',
             'quantity' => 200.0,
             'price' => 85.00,
+            'cost_per_unit' => 75.00,
             'unit' => 'kg',
-            'min_stock' => 50.0
+            'min_stock' => 50.0,
+            'reorder_point' => 75.0,
+            'max_stock' => 500.0,
+            'shelf_life_days' => 365,
+            'storage_requirements' => [
+                'temperature' => '15-20°C',
+                'humidity' => 'Below 14%',
+                'ventilation' => 'Good air circulation required'
+            ],
+            'supplier' => 'PhilRice Seed Center',
+            'supplier_contact' => '+63-44-456-0285',
+            'lead_time_days' => 7.0,
         ]);
 
         InventoryItem::create([
