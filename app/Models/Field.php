@@ -9,13 +9,19 @@ class Field extends Model
 
     protected $fillable = [
         'user_id',
+        'farm_id',
+        'name',
         'location',
         'soil_type',
         'size',
+        'field_coordinates',
+        'water_access',
+        'drainage_quality',
     ];
 
     protected $casts = [
         'location' => 'json',
+        'field_coordinates' => 'json',
         'size' => 'decimal:2',
     ];
 
@@ -25,6 +31,14 @@ class Field extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the farm this field belongs to
+     */
+    public function farm()
+    {
+        return $this->belongsTo(Farm::class);
     }
 
     /**

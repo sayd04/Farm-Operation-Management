@@ -49,9 +49,9 @@ class User extends Authenticatable
     /**
      * Role constants
      */
-    const ROLE_ADMIN = 'admin';
-    const ROLE_FARMER = 'farmer';
-    const ROLE_BUYER = 'buyer';
+    const ROLE_ADMIN = 'admin';    // User management
+    const ROLE_FARMER = 'farmer';  // Farm operations, weather analytics, marketplace seller
+    const ROLE_BUYER = 'buyer';    // Marketplace viewer only
 
     public function isAdmin(): bool
     {
