@@ -25,7 +25,7 @@
               name="name"
               type="text"
               required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
               placeholder="Enter your full name"
             />
           </div>
@@ -39,13 +39,13 @@
               type="email"
               autocomplete="email"
               required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="Enter your email address"
+              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+              placeholder="Enter your email"
             />
           </div>
           
           <div>
-            <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+            <label for="role" class="block text-sm font-medium text-gray-700">Account Type</label>
             <select
               id="role"
               v-model="form.role"
@@ -60,18 +60,6 @@
           </div>
           
           <div>
-            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number (Optional)</label>
-            <input
-              id="phone"
-              v-model="form.phone"
-              name="phone"
-              type="tel"
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="Enter your phone number"
-            />
-          </div>
-          
-          <div>
             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
             <input
               id="password"
@@ -80,8 +68,8 @@
               type="password"
               autocomplete="new-password"
               required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="Create a password"
+              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
+              placeholder="Enter your password"
             />
           </div>
           
@@ -94,7 +82,7 @@
               type="password"
               autocomplete="new-password"
               required
-              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+              class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
               placeholder="Confirm your password"
             />
           </div>
@@ -113,7 +101,7 @@
             <span v-if="authStore.loading" class="absolute left-0 inset-y-0 flex items-center pl-3">
               <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
             </span>
-            {{ authStore.loading ? 'Creating account...' : 'Create account' }}
+            {{ authStore.loading ? 'Creating account...' : 'Create Account' }}
           </button>
         </div>
 
@@ -142,7 +130,6 @@ const form = ref({
   name: '',
   email: '',
   role: '',
-  phone: '',
   password: '',
   password_confirmation: ''
 });
@@ -157,3 +144,4 @@ const handleRegister = async () => {
   }
 };
 </script>
+</template>

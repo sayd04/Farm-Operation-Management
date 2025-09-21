@@ -62,11 +62,17 @@
           </button>
         </div>
 
-        <div class="text-center">
+        <div class="text-center space-y-2">
           <p class="text-sm text-gray-600">
             Don't have an account?
             <router-link to="/register" class="font-medium text-green-600 hover:text-green-500">
               Sign up here
+            </router-link>
+          </p>
+          <p class="text-sm text-gray-600">
+            Forgot your password?
+            <router-link to="/forgot-password" class="font-medium text-green-600 hover:text-green-500">
+              Reset it here
             </router-link>
           </p>
         </div>
