@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'sales';
 
     protected $fillable = [
         'harvest_id',
@@ -21,8 +19,6 @@ class Sale extends Model
         'quantity' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'sale_date' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Harvest extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'harvests';
 
     protected $fillable = [
         'planting_id',
@@ -19,8 +17,6 @@ class Harvest extends Model
     protected $casts = [
         'yield' => 'decimal:2',
         'harvest_date' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

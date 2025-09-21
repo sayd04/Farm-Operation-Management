@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Laborer extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'laborers';
 
     protected $fillable = [
         'name',
@@ -17,8 +15,6 @@ class Laborer extends Model
 
     protected $casts = [
         'hourly_rate' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

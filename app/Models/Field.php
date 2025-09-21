@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Field extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'fields';
 
     protected $fillable = [
         'user_id',
@@ -17,10 +15,8 @@ class Field extends Model
     ];
 
     protected $casts = [
-        'location' => 'array',
+        'location' => 'json',
         'size' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

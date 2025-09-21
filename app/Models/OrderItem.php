@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'order_items';
 
     protected $fillable = [
         'order_id',
@@ -19,8 +17,6 @@ class OrderItem extends Model
     protected $casts = [
         'quantity' => 'decimal:2',
         'unit_price' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

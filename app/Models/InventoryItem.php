@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'inventory_items';
 
     protected $fillable = [
         'name',
@@ -22,8 +20,6 @@ class InventoryItem extends Model
         'quantity' => 'decimal:2',
         'price' => 'decimal:2',
         'min_stock' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class LaborWage extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'labor_wages';
 
     protected $fillable = [
         'laborer_id',
@@ -21,8 +19,6 @@ class LaborWage extends Model
         'hours_worked' => 'decimal:2',
         'wage_amount' => 'decimal:2',
         'date' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

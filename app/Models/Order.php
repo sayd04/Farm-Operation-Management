@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'orders';
 
     protected $fillable = [
         'buyer_id',
@@ -17,8 +15,6 @@ class Order extends Model
 
     protected $casts = [
         'total_amount' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

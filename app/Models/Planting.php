@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Planting extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'plantings';
 
     protected $fillable = [
         'field_id',
@@ -21,8 +19,6 @@ class Planting extends Model
     protected $casts = [
         'planting_date' => 'datetime',
         'expected_harvest_date' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**

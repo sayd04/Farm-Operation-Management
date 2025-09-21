@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class WeatherLog extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = 'weather_logs';
 
     protected $fillable = [
         'field_id',
@@ -23,8 +21,6 @@ class WeatherLog extends Model
         'humidity' => 'decimal:1',
         'wind_speed' => 'decimal:1',
         'recorded_at' => 'datetime',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
     ];
 
     /**
