@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
 window.axios = axios;
 
@@ -34,6 +36,36 @@ window.axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+// Laravel Echo (Pusher/WebSocket) setup
+try {
+    window.Pusher = Pusher;
+    const pusherKey = import.meta.env.VITE_PUSHER_APP_KEY;
+    if (pusherKey) {
+        const scheme = import.meta.env.VITE_PUSHER_SCHEME ?? (location.protocol === 'https:' ? 'https' : 'http');
+        const forceTLS = scheme === 'https';
+        const wsHost = import.meta.env.VITE_PUSHER_HOST ?? window.location.hostname;
+        const wsPort = import.meta.env.VITE_PUSHER_PORT ?? (forceTLS ? 443 : 6001);
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: pusherKey,
+            cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
+            wsHost,
+            wsPort,
+            wssPort: 443,
+            forceTLS,
+            enabledTransports: ['ws', 'wss'],
+            disableStats: true,
+            withCredentials: true,
+            authEndpoint: '/broadcasting/auth',
+            auth: {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+            },
+        });
+    }
+} catch (e) {
+    console.warn('Echo setup skipped:', e);
+}
 
 // Export axios for use in Vue components
 export default axios;

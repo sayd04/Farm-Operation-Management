@@ -119,6 +119,8 @@
       <router-view />
     </main>
 
+    <Toast />
+
     <!-- Global Loading -->
     <div v-if="loading" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white p-6 rounded-lg shadow-xl">
@@ -130,13 +132,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { ChevronDownIcon } from '@heroicons/vue/24/outline';
 import { useAuthStore } from '@/stores/auth';
+import { useAlertsStore } from '@/stores/alerts';
+import Toast from '@/Components/UI/Toast.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const alerts = useAlertsStore();
 
 const showUserMenu = ref(false);
 const loading = ref(false);
@@ -153,6 +158,10 @@ onMounted(() => {
   if (authStore.token) {
     authStore.fetchUser();
   }
+  // Subscribe to alerts when user is available
+  watch(() => authStore.user, (u) => {
+    if (u?.id) alerts.subscribe(u.id);
+  }, { immediate: true });
 });
 </script>
 
