@@ -9,7 +9,7 @@
 
     <!-- Filters -->
     <div class="bg-white shadow rounded-lg p-6 mb-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div>
           <label for="search" class="block text-sm font-medium text-gray-700">Search</label>
           <input
@@ -22,18 +22,10 @@
         </div>
         
         <div>
-          <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-          <select
-            id="category"
-            v-model="filters.category"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-          >
-            <option value="">All Categories</option>
-            <option value="rice">Rice</option>
-            <option value="vegetables">Vegetables</option>
-            <option value="fruits">Fruits</option>
-            <option value="grains">Grains</option>
-            <option value="other">Other</option>
+          <label class="block text-sm font-medium text-gray-700">Varietal</label>
+          <select v-model="filters.varietal" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm">
+            <option value="">All Varietals</option>
+            <option v-for="v in varietals" :key="v" :value="v">{{ v }}</option>
           </select>
         </div>
         
@@ -126,9 +118,10 @@ const products = ref([]);
 
 const filters = ref({
   search: '',
-  category: '',
+  varietal: '',
   price_range: ''
 });
+const varietals = ref(['IR64', 'Jasmine', 'Basmati', 'NSIC Rc222']);
 
 const filteredProducts = computed(() => {
   let filtered = products.value;
@@ -141,8 +134,11 @@ const filteredProducts = computed(() => {
     );
   }
 
-  if (filters.value.category) {
-    filtered = filtered.filter(product => product.category === filters.value.category);
+  // Restrict to harvested rice category only
+  filtered = filtered.filter(product => product.category === 'Harvested Rice');
+
+  if (filters.value.varietal) {
+    filtered = filtered.filter(product => (product.varietal || product.rice_varietal) === filters.value.varietal);
   }
 
   if (filters.value.price_range) {

@@ -31,8 +31,8 @@ import InventoryList from '@/Pages/Inventory/InventoryItems/Index.vue';
 import Marketplace from '@/Pages/Marketplace/Index.vue';
 import ProductDetail from '@/Pages/Marketplace/ProductDetail.vue';
 import Cart from '@/Pages/Marketplace/Cart.vue';
-// import OrdersList from '@/Pages/Marketplace/Orders/Index.vue';
-// import OrderDetail from '@/Pages/Marketplace/Orders/Show.vue';
+const Checkout = () => import('@/Pages/Marketplace/Checkout.vue');
+const BuyerOrders = () => import('@/Pages/Marketplace/Orders/Index.vue');
 
 // Admin
 // import AdminDashboard from '@/Pages/Admin/Dashboard.vue';
@@ -105,18 +105,18 @@ const routes = [
   //   component: FieldDetail,
   //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   // },
-  // {
-  //   path: '/plantings',
-  //   name: 'plantings',
-  //   component: PlantingsList,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
-  // {
-  //   path: '/plantings/:id',
-  //   name: 'planting-detail',
-  //   component: PlantingDetail,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
+  {
+    path: '/plantings',
+    name: 'plantings-index',
+    component: () => import('@/Pages/Farm/Planting/Index.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/plantings/create',
+    name: 'plantings-create',
+    component: () => import('@/Pages/Farm/Planting/Create.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   // {
   //   path: '/tasks',
   //   name: 'tasks',
@@ -177,18 +177,18 @@ const routes = [
     component: Cart,
     meta: { requiresAuth: true, roles: ['buyer'] }
   },
-  // {
-  //   path: '/orders',
-  //   name: 'orders',
-  //   component: OrdersList,
-  //   meta: { requiresAuth: true }
-  // },
-  // {
-  //   path: '/orders/:id',
-  //   name: 'order-detail',
-  //   component: OrderDetail,
-  //   meta: { requiresAuth: true }
-  // },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: Checkout,
+    meta: { requiresAuth: true, roles: ['buyer'] }
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: BuyerOrders,
+    meta: { requiresAuth: true, roles: ['buyer'] }
+  },
   
   // Admin Routes
   // {
