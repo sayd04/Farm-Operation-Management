@@ -7,6 +7,10 @@ import ForgotPassword from '@/Pages/Auth/ForgotPassword.vue';
 import ResetPassword from '@/Pages/Auth/ResetPassword.vue';
 import Dashboard from '@/Pages/Dashboard.vue';
 import Profile from '@/Pages/Profile.vue';
+import WeatherDashboard from '@/Pages/Weather/Dashboard.vue';
+
+// Onboarding
+const FarmOnboarding = () => import('@/Pages/Onboarding/FarmProfile.vue');
 
 // Farm Management
 import FieldsList from '@/Pages/Farm/Field/Index.vue';
@@ -21,7 +25,6 @@ import InventoryList from '@/Pages/Inventory/InventoryItems/Index.vue';
 // import InventoryDetail from '@/Pages/Inventory/Show.vue';
 
 // Weather
-import WeatherDashboard from '@/Pages/Weather/Dashboard.vue';
 // import FieldWeather from '@/Pages/Weather/FieldWeather.vue';
 
 // Marketplace
@@ -75,6 +78,12 @@ const routes = [
     name: 'dashboard',
     component: Dashboard,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/onboarding',
+    name: 'onboarding',
+    component: FarmOnboarding,
+    meta: { requiresAuth: true, roles: ['farmer'] }
   },
   {
     path: '/profile',
@@ -154,7 +163,7 @@ const routes = [
     path: '/marketplace',
     name: 'marketplace',
     component: Marketplace,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/marketplace/products/:id',

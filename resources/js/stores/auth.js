@@ -100,6 +100,27 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async submitFarmProfile(profileData) {
+      this.loading = true;
+      this.error = null;
+      try {
+        const response = await axios.post('/api/farmer/profile', profileData);
+        // Expect API to return updated user or profile completion flag
+        if (response.data?.user) {
+          this.user = response.data.user;
+        } else if (this.user) {
+          this.user.farm_profile = response.data;
+          this.user.farm_profile_completed = true;
+        }
+        return response.data;
+      } catch (error) {
+        this.error = error.response?.data?.message || 'Failed to save farm profile';
+        throw error;
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async updateProfile(profileData) {
       this.loading = true;
       this.error = null;
