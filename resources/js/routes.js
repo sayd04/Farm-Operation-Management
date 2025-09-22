@@ -117,12 +117,30 @@ const routes = [
     component: () => import('@/Pages/Farm/Planting/Create.vue'),
     meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   },
+  {
+    path: '/plantings/:id/edit',
+    name: 'plantings-edit',
+    component: () => import('@/Pages/Farm/Planting/Edit.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   // {
   //   path: '/tasks',
   //   name: 'tasks',
   //   component: TasksList,
   //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   // },
+  {
+    path: '/tasks',
+    name: 'tasks-index',
+    component: () => import('@/Pages/Labor/Tasks/Index.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/calendar',
+    name: 'calendar',
+    component: () => import('@/Pages/Labor/Tasks/Calendar.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   // {
   //   path: '/tasks/:id',
   //   name: 'task-detail',
@@ -143,6 +161,14 @@ const routes = [
   //   component: InventoryDetail,
   //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   // },
+
+  // Harvests
+  {
+    path: '/harvests/create',
+    name: 'harvests-create',
+    component: () => import('@/Pages/Farm/Harvest/Create.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   
   // Weather Routes
   {
