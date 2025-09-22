@@ -8,6 +8,7 @@ import ResetPassword from '@/Pages/Auth/ResetPassword.vue';
 import Dashboard from '@/Pages/Dashboard.vue';
 import Profile from '@/Pages/Profile.vue';
 import WeatherDashboard from '@/Pages/Weather/Dashboard.vue';
+const WeatherAnalytics = () => import('@/Pages/Weather/Analytics.vue');
 
 // Onboarding
 const FarmOnboarding = () => import('@/Pages/Onboarding/FarmProfile.vue');
@@ -33,6 +34,11 @@ import ProductDetail from '@/Pages/Marketplace/ProductDetail.vue';
 import Cart from '@/Pages/Marketplace/Cart.vue';
 const Checkout = () => import('@/Pages/Marketplace/Checkout.vue');
 const BuyerOrders = () => import('@/Pages/Marketplace/Orders/Index.vue');
+const FarmerStore = () => import('@/Pages/Farmer/Marketplace/Index.vue');
+const FarmerOrders = () => import('@/Pages/Farmer/Orders/Index.vue');
+
+// Reports
+const FarmerReports = () => import('@/Pages/Farmer/Reports/Index.vue');
 
 // Admin
 // import AdminDashboard from '@/Pages/Admin/Dashboard.vue';
@@ -177,6 +183,12 @@ const routes = [
     component: WeatherDashboard,
     meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   },
+  {
+    path: '/weather/analytics',
+    name: 'weather-analytics',
+    component: WeatherAnalytics,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   // {
   //   path: '/weather/fields/:id',
   //   name: 'field-weather',
@@ -215,6 +227,20 @@ const routes = [
     component: BuyerOrders,
     meta: { requiresAuth: true, roles: ['buyer'] }
   },
+
+  // Farmer marketplace management
+  {
+    path: '/farmer/marketplace',
+    name: 'farmer-marketplace',
+    component: FarmerStore,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/farmer/orders',
+    name: 'farmer-orders',
+    component: FarmerOrders,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   
   // Admin Routes
   // {
@@ -237,24 +263,12 @@ const routes = [
   // },
   
   // Reports Routes
-  // {
-  //   path: '/reports/financial',
-  //   name: 'financial-reports',
-  //   component: FinancialReports,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
-  // {
-  //   path: '/reports/crop-yield',
-  //   name: 'crop-yield-reports',
-  //   component: CropYieldReports,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
-  // {
-  //   path: '/reports/weather',
-  //   name: 'weather-reports',
-  //   component: WeatherReports,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
+  {
+    path: '/reports',
+    name: 'reports',
+    component: FarmerReports,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
 ];
 
 export default routes;
