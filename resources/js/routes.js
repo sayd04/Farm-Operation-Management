@@ -7,6 +7,11 @@ import ForgotPassword from '@/Pages/Auth/ForgotPassword.vue';
 import ResetPassword from '@/Pages/Auth/ResetPassword.vue';
 import Dashboard from '@/Pages/Dashboard.vue';
 import Profile from '@/Pages/Profile.vue';
+import WeatherDashboard from '@/Pages/Weather/Dashboard.vue';
+const WeatherAnalytics = () => import('@/Pages/Weather/Analytics.vue');
+
+// Onboarding
+const FarmOnboarding = () => import('@/Pages/Onboarding/FarmProfile.vue');
 
 // Farm Management
 import FieldsList from '@/Pages/Farm/Field/Index.vue';
@@ -21,15 +26,19 @@ import InventoryList from '@/Pages/Inventory/InventoryItems/Index.vue';
 // import InventoryDetail from '@/Pages/Inventory/Show.vue';
 
 // Weather
-import WeatherDashboard from '@/Pages/Weather/Dashboard.vue';
 // import FieldWeather from '@/Pages/Weather/FieldWeather.vue';
 
 // Marketplace
 import Marketplace from '@/Pages/Marketplace/Index.vue';
 import ProductDetail from '@/Pages/Marketplace/ProductDetail.vue';
 import Cart from '@/Pages/Marketplace/Cart.vue';
-// import OrdersList from '@/Pages/Marketplace/Orders/Index.vue';
-// import OrderDetail from '@/Pages/Marketplace/Orders/Show.vue';
+const Checkout = () => import('@/Pages/Marketplace/Checkout.vue');
+const BuyerOrders = () => import('@/Pages/Marketplace/Orders/Index.vue');
+const FarmerStore = () => import('@/Pages/Farmer/Marketplace/Index.vue');
+const FarmerOrders = () => import('@/Pages/Farmer/Orders/Index.vue');
+
+// Reports
+const FarmerReports = () => import('@/Pages/Farmer/Reports/Index.vue');
 
 // Admin
 // import AdminDashboard from '@/Pages/Admin/Dashboard.vue';
@@ -77,6 +86,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/onboarding',
+    name: 'onboarding',
+    component: FarmOnboarding,
+    meta: { requiresAuth: true, roles: ['farmer'] }
+  },
+  {
     path: '/profile',
     name: 'profile',
     component: Profile,
@@ -96,24 +111,42 @@ const routes = [
   //   component: FieldDetail,
   //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   // },
-  // {
-  //   path: '/plantings',
-  //   name: 'plantings',
-  //   component: PlantingsList,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
-  // {
-  //   path: '/plantings/:id',
-  //   name: 'planting-detail',
-  //   component: PlantingDetail,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
+  {
+    path: '/plantings',
+    name: 'plantings-index',
+    component: () => import('@/Pages/Farm/Planting/Index.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/plantings/create',
+    name: 'plantings-create',
+    component: () => import('@/Pages/Farm/Planting/Create.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/plantings/:id/edit',
+    name: 'plantings-edit',
+    component: () => import('@/Pages/Farm/Planting/Edit.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   // {
   //   path: '/tasks',
   //   name: 'tasks',
   //   component: TasksList,
   //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   // },
+  {
+    path: '/tasks',
+    name: 'tasks-index',
+    component: () => import('@/Pages/Labor/Tasks/Index.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/calendar',
+    name: 'calendar',
+    component: () => import('@/Pages/Labor/Tasks/Calendar.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   // {
   //   path: '/tasks/:id',
   //   name: 'task-detail',
@@ -134,12 +167,26 @@ const routes = [
   //   component: InventoryDetail,
   //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   // },
+
+  // Harvests
+  {
+    path: '/harvests/create',
+    name: 'harvests-create',
+    component: () => import('@/Pages/Farm/Harvest/Create.vue'),
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   
   // Weather Routes
   {
     path: '/weather',
     name: 'weather',
     component: WeatherDashboard,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/weather/analytics',
+    name: 'weather-analytics',
+    component: WeatherAnalytics,
     meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
   },
   // {
@@ -154,7 +201,7 @@ const routes = [
     path: '/marketplace',
     name: 'marketplace',
     component: Marketplace,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/marketplace/products/:id',
@@ -168,18 +215,32 @@ const routes = [
     component: Cart,
     meta: { requiresAuth: true, roles: ['buyer'] }
   },
-  // {
-  //   path: '/orders',
-  //   name: 'orders',
-  //   component: OrdersList,
-  //   meta: { requiresAuth: true }
-  // },
-  // {
-  //   path: '/orders/:id',
-  //   name: 'order-detail',
-  //   component: OrderDetail,
-  //   meta: { requiresAuth: true }
-  // },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: Checkout,
+    meta: { requiresAuth: true, roles: ['buyer'] }
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: BuyerOrders,
+    meta: { requiresAuth: true, roles: ['buyer'] }
+  },
+
+  // Farmer marketplace management
+  {
+    path: '/farmer/marketplace',
+    name: 'farmer-marketplace',
+    component: FarmerStore,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
+  {
+    path: '/farmer/orders',
+    name: 'farmer-orders',
+    component: FarmerOrders,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
   
   // Admin Routes
   // {
@@ -202,24 +263,12 @@ const routes = [
   // },
   
   // Reports Routes
-  // {
-  //   path: '/reports/financial',
-  //   name: 'financial-reports',
-  //   component: FinancialReports,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
-  // {
-  //   path: '/reports/crop-yield',
-  //   name: 'crop-yield-reports',
-  //   component: CropYieldReports,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
-  // {
-  //   path: '/reports/weather',
-  //   name: 'weather-reports',
-  //   component: WeatherReports,
-  //   meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
-  // },
+  {
+    path: '/reports',
+    name: 'reports',
+    component: FarmerReports,
+    meta: { requiresAuth: true, roles: ['farmer', 'admin'] }
+  },
 ];
 
 export default routes;
